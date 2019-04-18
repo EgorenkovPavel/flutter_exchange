@@ -58,25 +58,31 @@ class _MyHomePageState extends State<MyHomePage> {
           return ListTile(
             title: Text(flowers[pos].title),
             subtitle: Text(flowers[pos].description),
-            onTap: () {
+            trailing: IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () {
               showModalBottomSheet(
                   context: BuildContext,
                   builder: (context) {
+                    var controller = TextEditingController();
                     return Column(
                       children: <Widget>[
                         Text(flowers[pos].title),
-                        TextField(keyboardType: TextInputType.numberWithOptions(),),
+                        TextField(
+                          keyboardType: TextInputType.numberWithOptions(),
+                          controller: controller,
+                        ),
                         RaisedButton(
                           child: Text('ADD'),
                           onPressed: () {
-                            _basket.addFlower(flowers[pos], 1);
+                            _basket.addFlower(flowers[pos], int.parse(controller.text));
                             Navigator.pop(context);
                           },
                         ),
                       ],
                     );
                   });
-            },
+            }),
           );
         },
         itemCount: flowers.length,
