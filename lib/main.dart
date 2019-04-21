@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'flower.dart';
-import 'basket_widget.dart';
-import 'basket.dart';
+import 'package:flutter_exchange/objects/flower.dart';
+import 'package:flutter_exchange/pages/flower_page.dart';
+import 'package:flutter_exchange/pages/basket_page.dart';
+import 'package:flutter_exchange/objects/basket.dart';
+import 'package:flutter_exchange/widgets/list_item.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        accentColor: Colors.orange,
       ),
       home: MyHomePage(title: '7Flowers'),
     );
@@ -30,11 +32,37 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Flower> flowers = [
-    Flower('Rose', 'V-20'),
-    Flower('Tulpan', 'V-45')
+    Flower(
+        title: 'Rose',
+        description: 'V-34',
+        color: Colors.blue,
+        country: 'Spain',
+        multiplicity: 1,
+        available: 110,
+        price: 130),
+    Flower(
+        title: 'Tulpan',
+        description: 'V-20',
+        color: Colors.red,
+        country: 'Poland',
+        multiplicity: 10,
+        available: 200,
+        price: 35)
   ];
 
   final Basket _basket = Basket();
+
+  _onTapFlower(Flower _flower) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => FlowerPage(_flower, _onAddFlowerToBasket)),
+    );
+  }
+
+  _onAddFlowerToBasket(Flower _flower, int amount) {
+    _basket.addFlower(_flower, amount);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,46 +71,33 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         actions: <Widget>[
           FlatButton(
-            child: Icon(Icons.shopping_basket),
-            onPressed: (){
+            child: Stack(
+              children: <Widget>[
+                Icon(Icons.shopping_basket),
+                Positioned(
+                  child: Text(
+                    '${_basket.getLength()}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  top: 0,
+                  right: 0,
+                ),
+              ],
+            ),
+            onPressed: () {
               Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BasketPage(_basket)),
+                context,
+                MaterialPageRoute(builder: (context) => BasketPage(_basket)),
               );
             },
           )
         ],
       ),
       body: ListView.builder(
-        itemBuilder: (BuildContext, pos) {
-          return ListTile(
-            title: Text(flowers[pos].title),
-            subtitle: Text(flowers[pos].description),
-            trailing: IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-              showModalBottomSheet(
-                  context: BuildContext,
-                  builder: (context) {
-                    var controller = TextEditingController();
-                    return Column(
-                      children: <Widget>[
-                        Text(flowers[pos].title),
-                        TextField(
-                          keyboardType: TextInputType.numberWithOptions(),
-                          controller: controller,
-                        ),
-                        RaisedButton(
-                          child: Text('ADD'),
-                          onPressed: () {
-                            _basket.addFlower(flowers[pos], int.parse(controller.text));
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    );
-                  });
-            }),
+        itemBuilder: (context, pos) {
+          Flower _flower = flowers[pos];
+          return ListItem(_flower,
+            _onTapFlower
           );
         },
         itemCount: flowers.length,

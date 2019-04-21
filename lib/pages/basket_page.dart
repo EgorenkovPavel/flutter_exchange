@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'basket.dart';
+import 'package:flutter_exchange/objects/basket.dart';
 
 class BasketPage extends StatelessWidget{
 
