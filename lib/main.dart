@@ -70,8 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: <Widget>[
-          FlatButton(
-            child: Stack(
+          IconButton(icon: Icon(Icons.filter_list, color: Colors.white,),),
+          IconButton(
+            icon: Stack(
               children: <Widget>[
                 Icon(Icons.shopping_basket),
                 Positioned(
