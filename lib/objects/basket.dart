@@ -18,6 +18,14 @@ class Basket{
   int getAmount(int pos){
     return _flowers[pos].amount;
   }
+
+  double getTotalSum(){
+    double sum = 0;
+    for (BasketEntry x in _flowers){
+      sum += x._amount * x._flower.price;
+    }
+    return sum;
+  }
 }
 
 class BasketEntry{

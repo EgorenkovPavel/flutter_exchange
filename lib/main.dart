@@ -75,9 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 Icon(Icons.shopping_basket),
                 Positioned(
-                  child: Text(
-                    '${_basket.getLength()}',
-                    style: TextStyle(color: Colors.white),
+                  child: Container(
+                    decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.all(Radius.circular(4))),
+                    child: Text(
+                      '${_basket.getLength()}',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
                   ),
                   top: 0,
                   right: 0,
